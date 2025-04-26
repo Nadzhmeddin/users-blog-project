@@ -1,5 +1,6 @@
 package ru.users_blog.service;
 
+import ru.users_blog.dto.PostDto;
 import ru.users_blog.entity.Post;
 
 import java.util.List;
@@ -7,11 +8,11 @@ import java.util.Optional;
 
 public interface PostService {
 
-    List<Post> findAll();
+    List<PostDto> findAll();
 
-    Optional<Post> findById(Long id);
+    Optional<PostDto> findById(Long id);
 
-    Post save(Post post);
+    PostDto save(PostDto post);
 
     void deleteById(Long id);
 

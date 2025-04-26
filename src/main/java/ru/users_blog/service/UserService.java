@@ -1,5 +1,6 @@
 package ru.users_blog.service;
 
+import ru.users_blog.dto.UserDto;
 import ru.users_blog.entity.User;
 
 import java.util.List;
@@ -7,11 +8,11 @@ import java.util.Optional;
 
 public interface UserService {
 
-    List<User> findAll();
+    List<UserDto> findAll();
 
-    Optional<User> findById(Long id);
+    Optional<UserDto> findById(Long id);
 
-    User save(User user);
+    UserDto save(UserDto user);
 
     void deleteById(Long id);
 

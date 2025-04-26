@@ -1,5 +1,6 @@
 package ru.users_blog.service;
 
+import ru.users_blog.dto.CommentDto;
 import ru.users_blog.entity.Comment;
 
 import java.util.List;
@@ -7,11 +8,11 @@ import java.util.Optional;
 
 public interface CommentService {
 
-    List<Comment> findAll();
+    List<CommentDto> findAll();
 
-    Optional<Comment> findById(Long id);
+    Optional<CommentDto> findById(Long id);
 
-    Comment save(Comment comment);
+    CommentDto save(CommentDto comment);
 
     void deleteById(Long id);
 
