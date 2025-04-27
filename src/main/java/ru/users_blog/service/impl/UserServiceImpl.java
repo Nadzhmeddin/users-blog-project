@@ -3,6 +3,8 @@ package ru.users_blog.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.users_blog.dto.UserDto;
+import ru.users_blog.entity.User;
+import ru.users_blog.mapper.UserMapper;
 import ru.users_blog.repository.UserRepository;
 import ru.users_blog.service.UserService;
 
@@ -14,29 +16,39 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+    private final UserMapper mapper;
 
     @Override
     public List<UserDto> findAll() {
-        return List.of();
+        List<User> allUsers = repository.findAll();
+        if(allUsers.isEmpty()) {
+            throw new IllegalArgumentException("Users not found!");
+        }
+        return mapper.toDtoList(allUsers);
     }
 
     @Override
     public Optional<UserDto> findById(Long id) {
-        return Optional.empty();
+        Optional<User> foundUser = repository.findById(id);
+        if(foundUser.isEmpty()) {
+            throw new IllegalArgumentException("User with that Id is not found!");
+        }
+        return Optional.of(mapper.toDto(foundUser.get()));
     }
 
     @Override
     public UserDto save(UserDto user) {
-        return null;
+        User savedUser = repository.save(mapper.toEntity(user));
+        return mapper.toDto(savedUser);
     }
 
     @Override
     public void deleteById(Long id) {
-
+        repository.deleteById(id);
     }
 
     @Override
     public void deleteAll() {
-
+        repository.deleteAll();
     }
 }
