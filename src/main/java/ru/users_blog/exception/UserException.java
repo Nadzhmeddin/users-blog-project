@@ -1,9 +1,13 @@
 package ru.users_blog.exception;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-
+@AllArgsConstructor
 @Getter
-public record UserException(String message, Throwable throwable, HttpStatus httpStatus) {
+public class UserException {
+    private final String message;
+    private final Throwable throwable;
+    private final HttpStatus httpStatus;
 }
