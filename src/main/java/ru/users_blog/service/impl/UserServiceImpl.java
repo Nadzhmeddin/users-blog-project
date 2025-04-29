@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.users_blog.dto.UserDto;
 import ru.users_blog.entity.User;
+import ru.users_blog.exception.UserNotFoundException;
 import ru.users_blog.mapper.UserMapper;
 import ru.users_blog.repository.UserRepository;
 import ru.users_blog.service.UserService;
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDto> findById(Long id) {
         Optional<User> foundUser = repository.findById(id);
         if(foundUser.isEmpty()) {
-            throw new IllegalArgumentException("User with that Id is not found!");
+            throw new UserNotFoundException("Requested User does not exist");
         }
         return Optional.of(mapper.toDto(foundUser.get()));
     }
