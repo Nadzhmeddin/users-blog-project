@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.users_blog.dto.UserDto;
 import ru.users_blog.entity.User;
-import ru.users_blog.exception.UserNotFoundException;
+import ru.users_blog.exception.user_exception.EmailNullPointerException;
+import ru.users_blog.exception.user_exception.NameNullPointerException;
+import ru.users_blog.exception.user_exception.UserNotFoundException;
+import ru.users_blog.exception.user_exception.UsersNotFoundException;
 import ru.users_blog.mapper.UserMapper;
 import ru.users_blog.repository.UserRepository;
 import ru.users_blog.service.UserService;
@@ -23,7 +26,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAll() {
         List<User> allUsers = repository.findAll();
         if(allUsers.isEmpty()) {
-            throw new IllegalArgumentException("Users not found!");
+            throw new UsersNotFoundException("There are no registered users");
         }
         return mapper.toDtoList(allUsers);
     }
@@ -39,12 +42,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserDto user) {
+        if(user.getEmail().isEmpty()) {
+            throw new EmailNullPointerException("The email field cannot be empty");
+        }
+        if(user.getName().isEmpty()) {
+            throw new NameNullPointerException("The name field cannot be empty");
+        }
         User savedUser = repository.save(mapper.toEntity(user));
         return mapper.toDto(savedUser);
     }
 
     @Override
     public void deleteById(Long id) {
+        Optional<User> deletedUser = repository.findById(id);
+        if(deletedUser.isEmpty()) {
+            throw new UserNotFoundException("Requested User does not exist");
+        }
         repository.deleteById(id);
     }
 

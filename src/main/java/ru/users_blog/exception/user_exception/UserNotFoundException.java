@@ -1,4 +1,4 @@
-package ru.users_blog.exception;
+package ru.users_blog.exception.user_exception;
 
 public class UserNotFoundException extends RuntimeException {
 

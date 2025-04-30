@@ -19,18 +19,12 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll() {
-        List<UserDto> allUsers = service.findAll();
-        if(allUsers.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } else return ResponseEntity.status(HttpStatus.OK).body(allUsers);
+        return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UserDto>> findById(@PathVariable Long id) {
-        Optional<UserDto> foundUser = service.findById(id);
-        if(foundUser.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(foundUser);
-        } else return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
     }
 
     @PostMapping
