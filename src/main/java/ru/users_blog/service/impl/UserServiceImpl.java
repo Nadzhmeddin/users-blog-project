@@ -42,7 +42,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserDto user) {
-        if(user.getEmail().isEmpty()) {
+
+        if(user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
             throw new EmailNullPointerException("The email field cannot be empty");
         }
         if(user.getName().isEmpty()) {

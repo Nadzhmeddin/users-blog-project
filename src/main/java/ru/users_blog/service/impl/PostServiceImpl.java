@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.users_blog.dto.PostDto;
 import ru.users_blog.entity.Post;
+import ru.users_blog.exception.post_exception.PostNotFoundException;
+import ru.users_blog.exception.post_exception.PostsNotFoundException;
 import ru.users_blog.mapper.PostMapper;
 import ru.users_blog.repository.PostRepository;
 import ru.users_blog.service.PostService;
@@ -22,7 +24,7 @@ public class PostServiceImpl implements PostService {
     public List<PostDto> findAll() {
         List<Post> allPosts = repository.findAll();
         if(allPosts.isEmpty()) {
-            throw new IllegalArgumentException("Posts not found!");
+            throw new PostsNotFoundException("Posts not found!");
         }
         return mapper.toDtoList(allPosts);
     }
@@ -31,7 +33,7 @@ public class PostServiceImpl implements PostService {
     public Optional<PostDto> findById(Long id) {
         Optional<Post> foundPost = repository.findById(id);
         if(foundPost.isEmpty()) {
-            throw new IllegalArgumentException("Post with that Id is not found!");
+            throw new PostNotFoundException("Post with that Id is not found!");
         }
         return Optional.of(mapper.toDto(foundPost.get()));
     }
@@ -44,6 +46,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deleteById(Long id) {
+        if(repository.findById(id).isEmpty()) {
+            throw new PostNotFoundException("Post with that Id is not found!");
+        }
         repository.deleteById(id);
     }
 

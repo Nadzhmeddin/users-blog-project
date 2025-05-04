@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.users_blog.dto.CommentDto;
-import ru.users_blog.mapper.CommentMapper;
 import ru.users_blog.service.impl.CommentServiceImpl;
 
 import java.util.List;

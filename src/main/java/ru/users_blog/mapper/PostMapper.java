@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.users_blog.dto.PostDto;
 import ru.users_blog.entity.Post;
 import ru.users_blog.entity.User;
+import ru.users_blog.exception.user_exception.UsersNotFoundException;
 import ru.users_blog.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class PostMapper {
             post.setDescription(postDto.getDescription());
             return post;
         }
-        else throw new IllegalArgumentException("User with this ID not found!");
+        else throw new UsersNotFoundException("User with that Id is not found!");
     }
 
     public PostDto toDto(Post post) {

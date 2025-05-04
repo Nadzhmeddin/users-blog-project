@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.users_blog.dto.CommentDto;
 import ru.users_blog.entity.Comment;
+import ru.users_blog.exception.comment_exception.CommentNotFoundException;
+import ru.users_blog.exception.comment_exception.CommentsNotFoundException;
 import ru.users_blog.mapper.CommentMapper;
 import ru.users_blog.repository.CommentRepository;
 import ru.users_blog.service.CommentService;
@@ -22,7 +24,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentDto> findAll() {
         List<Comment> allComments = repository.findAll();
         if(allComments.isEmpty()) {
-            throw new IllegalArgumentException("Comments not found");
+            throw new CommentsNotFoundException("Comments not found");
         }
         return mapper.toDtoList(repository.findAll());
     }
@@ -31,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
     public Optional<CommentDto> findById(Long id) {
         Optional<Comment> foundComment = repository.findById(id);
         if(foundComment.isEmpty()) {
-            throw new IllegalArgumentException("Comment with that Id is not found");
+            throw new CommentNotFoundException("Comment with that Id is not found");
         }
         return Optional.of(mapper.toDto(foundComment.get()));
     }
@@ -44,6 +46,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteById(Long id) {
+        if(repository.findById(id).isEmpty()) {
+            throw new CommentNotFoundException("Comment with that Id is not found!");
+        }
         repository.deleteById(id);
     }
 
